@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, signal } from '@angular/core';
+import { Component, OnInit, OnDestroy, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormControl } from '@angular/forms';
 import { RouterLink } from '@angular/router';
@@ -20,7 +20,12 @@ declare var webkitSpeechRecognition: any;
       <div class="dashboard-header">
         <div class="header-left">
           <h1>NutriTrack</h1>
-          <p class="date-text">{{ formattedDate() }}</p>
+          <p class="date-text">
+            @if (userName()) {
+              Olá, {{ userName() }} · 
+            }
+            {{ formattedDate() }}
+          </p>
         </div>
         <button class="btn-icon" (click)="logout()" title="Sair">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -574,6 +579,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
   isRecording = signal(false);
 
   deletingMealId = signal<string | null>(null);
+
+  userName = computed(() => {
+    const user = this.authService.currentUser();
+    if (!user?.name) return '';
+    return user.name.split(' ')[0];
+  });
 
   // Estado dos cards expansíveis
   expandedMeals: Record<string, boolean> = {};

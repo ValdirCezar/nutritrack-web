@@ -48,10 +48,10 @@ export class AuthService {
   }
 
   // Registra o usuário (retorna sem token — precisa verificar e-mail)
-  register(email: string, password: string): Observable<ApiResponse<void>> {
+  register(name: string, email: string, password: string): Observable<ApiResponse<void>> {
     return this.http.post<ApiResponse<void>>(
       `${this.apiUrl}/register`,
-      { email, password }
+      { name, email, password }
     );
   }
 

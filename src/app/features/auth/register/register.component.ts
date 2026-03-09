@@ -18,6 +18,17 @@ import { AuthService } from '../../../core/services/auth.service';
 
         <form [formGroup]="form" (ngSubmit)="onSubmit()">
           <div class="form-group">
+            <label for="name">Nome</label>
+            <input
+              id="name"
+              type="text"
+              formControlName="name"
+              placeholder="Seu nome (opcional)"
+              autocomplete="name"
+            >
+          </div>
+
+          <div class="form-group">
             <label for="email">E-mail</label>
             <input
               id="email"
@@ -142,6 +153,7 @@ import { AuthService } from '../../../core/services/auth.service';
 })
 export class RegisterComponent {
   form = new FormGroup({
+    name: new FormControl(''),
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [Validators.required, Validators.minLength(8)]),
     confirmPassword: new FormControl('', [Validators.required])
@@ -173,9 +185,9 @@ export class RegisterComponent {
     this.loading.set(true);
     this.errorMessage.set('');
 
-    const { email, password } = this.form.value;
+    const { name, email, password } = this.form.value;
 
-    this.authService.register(email!, password!).subscribe({
+    this.authService.register(name || '', email!, password!).subscribe({
       next: () => {
         // Redireciona para a tela de verificação de e-mail
         this.router.navigate(['/verify-email'], {
