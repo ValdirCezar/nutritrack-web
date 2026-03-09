@@ -26,8 +26,12 @@ export class AuthService {
           this.currentUser.set(user);
           this.isAuthenticated.set(true);
         },
-        error: () => {
-          this.clearAuth();
+        error: (err) => {
+          // Só limpa autenticação se o token for inválido (401)
+          // Erros de rede/timeout não devem deslogar o usuário
+          if (err?.status === 401) {
+            this.clearAuth();
+          }
         }
       });
     }
