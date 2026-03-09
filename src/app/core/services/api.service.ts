@@ -38,6 +38,10 @@ export class ApiService {
     );
   }
 
+  deleteMeal(mealId: string): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/meals/${mealId}`);
+  }
+
   getDashboard(date: string): Observable<DashboardResponse> {
     return this.http.get<ApiResponse<DashboardResponse>>(`${this.apiUrl}/dashboard`, {
       params: { date }

@@ -112,6 +112,22 @@ import { ProgressBarComponent } from '../dashboard/progress-bar/progress-bar.com
                       <span>C: {{ meal.totals.carbs }}g</span>
                       <span>G: {{ meal.totals.fat }}g</span>
                     </div>
+                    <button
+                      class="btn-delete-meal"
+                      (click)="deleteMeal(meal.id, $event)"
+                      [disabled]="deletingMealId() === meal.id"
+                    >
+                      @if (deletingMealId() === meal.id) {
+                        <span class="spinner spinner-sm"></span>
+                        Excluindo...
+                      } @else {
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                          <polyline points="3 6 5 6 21 6"/>
+                          <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                        </svg>
+                        Excluir refeição
+                      }
+                    </button>
                   </div>
                 }
               </div>
@@ -335,6 +351,45 @@ import { ProgressBarComponent } from '../dashboard/progress-bar/progress-bar.com
       font-weight: 500;
     }
 
+    .btn-delete-meal {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      width: 100%;
+      margin-top: 12px;
+      padding: 8px 12px;
+      border: 1px solid #FFCDD2;
+      border-radius: 8px;
+      background: #FFF5F5;
+      color: #D32F2F;
+      font-size: 12px;
+      font-weight: 500;
+      font-family: inherit;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .btn-delete-meal:hover:not(:disabled) {
+      background: #FFEBEE;
+      border-color: #EF9A9A;
+    }
+
+    .btn-delete-meal:active:not(:disabled) {
+      background: #FFCDD2;
+    }
+
+    .btn-delete-meal:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .spinner-sm {
+      width: 14px;
+      height: 14px;
+      border-width: 2px;
+    }
+
     .empty-state {
       text-align: center;
       padding: 32px 20px;
@@ -386,6 +441,7 @@ export class HistoryComponent implements OnInit {
   dashboard = signal<DashboardResponse | null>(null);
   loading = signal(false);
   errorMessage = signal('');
+  deletingMealId = signal<string | null>(null);
   dateControl: FormControl;
   todayISO: string;
 
@@ -422,6 +478,24 @@ export class HistoryComponent implements OnInit {
 
   toggleMeal(mealId: string): void {
     this.expandedMeals[mealId] = !this.expandedMeals[mealId];
+  }
+
+  deleteMeal(mealId: string, event: Event): void {
+    event.stopPropagation();
+    if (!confirm('Tem certeza que deseja excluir esta refeição?')) return;
+
+    this.deletingMealId.set(mealId);
+    this.apiService.deleteMeal(mealId).subscribe({
+      next: () => {
+        this.deletingMealId.set(null);
+        delete this.expandedMeals[mealId];
+        this.loadData(this.dateControl.value);
+      },
+      error: () => {
+        this.deletingMealId.set(null);
+        this.errorMessage.set('Erro ao excluir refeição. Tente novamente.');
+      }
+    });
   }
 
   private loadData(date: string): void {
