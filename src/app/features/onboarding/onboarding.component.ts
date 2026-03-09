@@ -250,7 +250,7 @@ import { Profile } from '../../core/models/profile.model';
       border-radius: 10px;
       color: var(--text-secondary);
       text-decoration: none;
-      transition: all 0.15s ease;
+      transition: background-color 0.15s ease, color 0.15s ease;
     }
 
     .btn-back:hover {

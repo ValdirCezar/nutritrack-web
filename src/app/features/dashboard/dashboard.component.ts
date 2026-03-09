@@ -301,7 +301,7 @@ declare var webkitSpeechRecognition: any;
       border-radius: 8px;
       padding: 12px;
       font-family: inherit;
-      font-size: 14px;
+      font-size: 16px;
       resize: vertical;
       min-height: 80px;
       box-sizing: border-box;
@@ -490,7 +490,7 @@ declare var webkitSpeechRecognition: any;
       font-weight: 500;
       font-family: inherit;
       cursor: pointer;
-      transition: all 0.15s ease;
+      transition: background-color 0.15s ease, border-color 0.15s ease;
     }
 
     .btn-delete-meal:hover:not(:disabled) {
