@@ -1,19 +1,25 @@
 import { Component, OnInit, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { ApiService } from '../../core/services/api.service';
 import { Profile } from '../../core/models/profile.model';
 
 @Component({
   selector: 'app-onboarding',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterLink],
   template: `
     <div class="onboarding-container">
       <div class="onboarding-card">
         @if (!profileResult()) {
           <div class="onboarding-header">
+            <a routerLink="/dashboard" class="btn-back" title="Voltar ao Dashboard">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 12H5"/>
+                <polyline points="12 19 5 12 12 5"/>
+              </svg>
+            </a>
             <h1>Seu Perfil</h1>
             <p>Preencha seus dados para calcularmos suas metas nutricionais</p>
           </div>
@@ -159,6 +165,12 @@ import { Profile } from '../../core/models/profile.model';
           </form>
         } @else {
           <div class="onboarding-header">
+            <a routerLink="/dashboard" class="btn-back" title="Voltar ao Dashboard">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 12H5"/>
+                <polyline points="12 19 5 12 12 5"/>
+              </svg>
+            </a>
             <h1>Suas Metas</h1>
             <p>Metas calculadas com base no seu perfil</p>
           </div>
@@ -223,6 +235,31 @@ import { Profile } from '../../core/models/profile.model';
     .onboarding-header {
       text-align: center;
       margin-bottom: 28px;
+      position: relative;
+    }
+
+    .btn-back {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 10px;
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: all 0.15s ease;
+    }
+
+    .btn-back:hover {
+      background: var(--bg-color);
+      color: var(--primary-color);
+    }
+
+    .btn-back:active {
+      background: #E8E8E8;
     }
 
     .onboarding-header h1 {
