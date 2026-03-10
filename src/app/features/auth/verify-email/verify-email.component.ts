@@ -200,7 +200,7 @@ export class VerifyEmailComponent implements OnInit, OnDestroy {
     });
 
     // Inicia cooldown inicial (acabou de receber o código)
-    this.startCooldown(60);
+    this.startCooldown(30);
   }
 
   ngOnDestroy(): void {
@@ -241,7 +241,7 @@ export class VerifyEmailComponent implements OnInit, OnDestroy {
       next: () => {
         this.resending.set(false);
         this.successMessage.set('Novo código enviado para seu e-mail!');
-        this.startCooldown(60);
+        this.startCooldown(30);
       },
       error: (err) => {
         this.resending.set(false);

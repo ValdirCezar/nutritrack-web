@@ -290,13 +290,13 @@ export class ForgotPasswordComponent implements OnDestroy {
       next: () => {
         this.loading.set(false);
         this.step.set('code');
-        this.startCooldown(60);
+        this.startCooldown(30);
       },
       error: () => {
         this.loading.set(false);
         // Sempre avança para a tela de código (não revela se o e-mail existe)
         this.step.set('code');
-        this.startCooldown(60);
+        this.startCooldown(30);
       }
     });
   }
@@ -332,7 +332,7 @@ export class ForgotPasswordComponent implements OnDestroy {
     this.authService.resendCode(this.email, 'reset').subscribe({
       next: () => {
         this.resending.set(false);
-        this.startCooldown(60);
+        this.startCooldown(30);
       },
       error: (err) => {
         this.resending.set(false);
