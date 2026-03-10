@@ -647,7 +647,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.registeringMeal.set(true);
     this.mealError.set('');
 
-    this.apiService.registerMeal(description).subscribe({
+    this.apiService.registerMeal(description, this.today).subscribe({
       next: () => {
         this.registeringMeal.set(false);
         this.mealDescription.setValue('');

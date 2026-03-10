@@ -32,8 +32,8 @@ export class ApiService {
     );
   }
 
-  registerMeal(description: string): Observable<Meal> {
-    return this.http.post<ApiResponse<Meal>>(`${this.apiUrl}/meals`, { description }).pipe(
+  registerMeal(description: string, date?: string): Observable<Meal> {
+    return this.http.post<ApiResponse<Meal>>(`${this.apiUrl}/meals`, { description, date }).pipe(
       map(response => response.data!)
     );
   }
